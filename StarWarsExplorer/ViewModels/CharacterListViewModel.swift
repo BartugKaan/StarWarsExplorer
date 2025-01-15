@@ -10,17 +10,16 @@ import Foundation
 class CharacterListViewModel {
     var characters: [Character] = []
     
-    var onDataFetch: (() -> Void)?
+    var onDataFetched: (() -> Void)?
     
-    func fetchData(){
-        NetworkManager.shared.fetch(urlString: "https://swapi.dev/api/people/") { (result: Result<[Character], Error>) in
-            switch result{
-            case .success(let characters):
-                self.characters = characters
-                self.onDataFetch?()
+    func fetchCharacters() {
+        NetworkManager.shared.fetch(urlString: "https://swapi.dev/api/people/") { (result: Result<CharacterResponse, Error>) in
+            switch result {
+            case .success(let response):
+                self.characters = response.results
+                self.onDataFetched?()
             case .failure(let error):
                 print("Error fetching characters: \(error)")
-                
             }
         }
     }
