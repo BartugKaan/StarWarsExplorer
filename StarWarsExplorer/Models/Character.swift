@@ -24,6 +24,12 @@ struct Character: Decodable {
     let created: String?
     let edited: String?
     let url: String?
+    
+    var imageUrl: String?{
+        guard let url = url else { return nil }
+        let id = url.split(separator: "/").last ?? ""
+        return "https://starwars-visualguide.com/assets/img/characters/\(id).jpg"
+    }
 
     enum CodingKeys: String, CodingKey {
         case name
