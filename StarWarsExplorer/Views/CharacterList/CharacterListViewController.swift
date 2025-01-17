@@ -20,6 +20,8 @@ class CharacterListViewController: UIViewController, UICollectionViewDataSource,
         view.backgroundColor = .white
         title = "Characters"
         
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        
         setupCollectionView()
         
         
