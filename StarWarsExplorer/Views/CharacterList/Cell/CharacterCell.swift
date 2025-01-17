@@ -15,7 +15,7 @@ class CharacterCell: UICollectionViewCell {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFit
         iv.clipsToBounds = true
-        iv.layer.cornerRadius = 10
+        iv.layer.cornerRadius = 20
         return iv
     }()
     
@@ -43,7 +43,7 @@ class CharacterCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        imageView.frame = CGRect(x: 0, y: 0, width: contentView.frame.width, height: contentView.frame.width)
+        imageView.frame = CGRect(x: 0, y: 10, width: contentView.frame.width, height: contentView.frame.width)
         nameLabel.frame = CGRect(x: 5, y: contentView.frame.width + 5, width: contentView.frame.width - 10, height: 40)
     }
     
