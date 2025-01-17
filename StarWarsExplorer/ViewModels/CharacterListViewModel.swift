@@ -9,14 +9,22 @@ import Foundation
 
 class CharacterListViewModel {
     var characters: [Character] = []
+    var nextPageURL: String? = "https://swapi.dev/api/people/"
+    var isLoading = false
     
     var onDataFetched: (() -> Void)?
     
     func fetchCharacters() {
-        NetworkManager.shared.fetch(urlString: "https://swapi.dev/api/people/") { (result: Result<CharacterResponse, Error>) in
+        guard !isLoading, let nextPageURL = nextPageURL else { return }
+        isLoading = true
+        
+        
+        NetworkManager.shared.fetch(urlString: nextPageURL) { (result: Result<CharacterResponse, Error>) in
+            self.isLoading = false
             switch result {
             case .success(let response):
-                self.characters = response.results
+                self.characters.append(contentsOf: response.results)
+                self.nextPageURL = response.next
                 self.onDataFetched?()
             case .failure(let error):
                 print("Error fetching characters: \(error)")

@@ -51,7 +51,7 @@ class CharacterCell: UICollectionViewCell {
         nameLabel.text = character.name
         
         if let imageUrl = character.imageUrl, let url = URL(string: imageUrl){
-            imageView.kf.setImage(with: url, placeholder: UIImage(systemName: "person.circle"))
+            imageView.kf.setImage(with: url, placeholder: UIActivityIndicatorView(style: .medium) as? Placeholder)
         }
         
     }

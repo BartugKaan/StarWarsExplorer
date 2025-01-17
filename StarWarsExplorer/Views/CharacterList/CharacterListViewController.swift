@@ -10,9 +10,9 @@ import UIKit
 class CharacterListViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
     
-    
     let viewModel = CharacterListViewModel()
     var collectionView: UICollectionView!
+    var activityIndicator: UIActivityIndicatorView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,12 +23,14 @@ class CharacterListViewController: UIViewController, UICollectionViewDataSource,
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         
         setupCollectionView()
+        setupActivityIndicator()
         
-        
+        showActivityIndicator()
         viewModel.fetchCharacters()
         
         viewModel.onDataFetched = {
             DispatchQueue.main.async {
+                self.hideActivityIndicator()
                 self.collectionView.reloadData()
             }
         }
@@ -49,6 +51,23 @@ class CharacterListViewController: UIViewController, UICollectionViewDataSource,
         view.addSubview(collectionView)
     }
     
+    private func setupActivityIndicator(){
+        activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.center = view.center
+        activityIndicator.color = .white
+        view.addSubview(activityIndicator)
+    }
+    
+    private func showActivityIndicator(){
+        activityIndicator.startAnimating()
+        activityIndicator.isHidden = false
+    }
+    
+    private func hideActivityIndicator(){
+        activityIndicator.stopAnimating()
+        activityIndicator.isHidden = true
+    }
+    
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.numberOfRowsInSection()
@@ -61,6 +80,17 @@ class CharacterListViewController: UIViewController, UICollectionViewDataSource,
         let character = viewModel.character(at: indexPath.row)
         cell.configure(with: character)
         return cell
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let position = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let scrollViewHeight = scrollView.frame.size.height
+        
+        if position > contentHeight - scrollViewHeight - 100{
+            showActivityIndicator()
+            viewModel.fetchCharacters()
+        }
     }
     
 

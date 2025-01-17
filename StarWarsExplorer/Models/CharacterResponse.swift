@@ -9,4 +9,6 @@ import Foundation
 
 struct CharacterResponse: Decodable{
     let results: [Character]
+    let next: String?
+    let previous: String?
 }
